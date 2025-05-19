@@ -1,0 +1,73 @@
+<div class="d-flex justify-content-center align-items-center">
+    <form [formGroup]="form" class="border p-4 border-1">
+        <div class="form-group">
+            <label for="selectedOption">Select Option</label>
+            <select formControlName="selectedOption" (ngModelChange)="toggleOptions()" class="form-control">
+              <option value="station">Station</option>
+              <option value="flight">Flight</option>
+            </select>
+        </div>
+      
+        <div *ngIf="form.get('selectedOption')?.value === 'station'; else elseblock">
+            <div class="row">
+                <div class="col">
+                    <label for="startDate">Start Date <span style="color: red;">*</span></label><br>
+                    <input type="date" formControlName="startDate" (ngModelChange)="startDateChanged()" min="{{currentDate | date:'yyyy-MM-dd'}}" class="form-control">
+                    <div *ngIf="startDate.invalid && (startDate.dirty || startDate.touched)"class="alert-alert-danger">
+                        <div *ngIf="startDate.errors?.['required']" style="color: red;">StartDate is required.</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="startTime">Start Time <span style="color: red;">*</span></label><br>
+                    <input type="time" formControlName="startTime" class="form-control" (ngModelChange)="startTimeChanged()">
+                    <div *ngIf="startTime.invalid && (startTime.dirty || startTime.touched)"class="alert-alert-danger">
+                        <div *ngIf="startTime.errors?.['required']" style="color: red;">StartTime is required.</div>
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <div class="col">
+                        <label for="endDate">End Date <span style="color: red;">*</span></label><br>
+                        <input type="date" (ngModelChange)="endDateChanged()" formControlName="endDate"  min="{{endDateStart | date:'yyyy-MM-dd'}}" class="form-control">
+                        <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)"class="alert-alert-danger">
+                            <div *ngIf="endDate.errors?.['required']" style="color: red;">EndDate is required.</div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="endTime">End Time <span style="color: red;">*</span></label><br>
+                        <input type="time" formControlName="endTime" class="form-control" [min] = "startDate.value === endDate.value? startTime.value:'00:00'">
+                        <div *ngIf="endTime.invalid && (endTime.dirty || endTime.touched)"class="alert-alert-danger">
+                            <div *ngIf="endTime.errors?.['required']" style="color: red;">EndTime is required.</div>
+                        </div>
+                        <div *ngIf="endTime.valid && !isEndTimeValid() "class="alert-alert-danger">
+                            <div style="color: red;">EndTime is not valid.</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary col-lg-1" [disabled]="!form.valid || !isEndTimeValid()" (click)="submit()">Save</button>
+    
+            </div> 
+        </div>
+      
+
+        <ng-template #elseblock>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="flightNumber">Flight Number <span style="color: red;">*</span></label>
+                    <input type="text" formControlName="flightNumber" class="form-control">
+                    <div *ngIf="flightNumber.invalid && (flightNumber.dirty || flightNumber.touched)"class="alert-alert-danger">
+                        <div *ngIf="flightNumber.errors?.['required']" style="color: red;">FlightNumber is required.</div>
+                    </div>                    
+                </div> 
+                <div class="form-group col">
+                    <label for="flightDate">Flight Date <span style="color: red;">*</span></label>
+                    <input type="date" formControlName="flightDate" min="{{currentDate | date:'yyyy-MM-dd'}}" class="form-control">
+                    <div *ngIf="flightDate.invalid && (flightDate.dirty || flightDate.touched)"class="alert-alert-danger">
+                        <div *ngIf="flightDate.errors?.['required']" style="color: red;">FlightDate is required.</div>
+                    </div>
+                </div>
+                <button class="btn btn-primary float-right pull-right" [disabled]="!form.valid" (click)="save()">Submit</button>
+            </div>
+        </ng-template>
+      </form>
+</div>
