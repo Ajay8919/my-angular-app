@@ -1,5 +1,5 @@
 {
-  "name": "first-app",
+  "name": "my-angular-app",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -21,6 +21,7 @@
     "bootstrap": "^5.2.0",
     "first-app": "file:",
     "karma-edge-launcher": "^0.4.2",
+    "my-angular-app": "file:",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
